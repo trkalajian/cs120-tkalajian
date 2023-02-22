@@ -1,0 +1,71 @@
+﻿/*"Homer's Night Out"*/
+@media only screen and (min-width : 1200px) {
+    .homer {
+        width: 166px;
+        height: 125px;
+        background: url(homer.jpg) 0px 0px; 
+    }
+}
+
+/*Outside Moes*/
+@media only screen and (min-width: 1100px) and (max-width: 1200px) {
+    .homer {
+        width: 166px;
+        height: 125px;
+        background: url(homer.jpg) -166px 0px;
+    }
+}
+
+/*"Hmmm"*/
+@media only screen and (min-width: 1000px) and (max-width: 1100px) {
+    .homer {
+        width: 166px;
+        height: 125px;
+        background: url(homer.jpg) -333px -125px;
+    }
+}
+
+/*Inside Bar*/
+@media only screen and (min-width: 900px) and (max-width: 1000px) {
+    .homer {
+        width: 166px;
+        height: 125px;
+        background: url(homer.jpg) -499px -125px;
+    }
+}
+
+/*Scene missing 1*/
+@media only screen and (min-width: 800px) and (max-width: 900px) {
+    .homer {
+        width: 166px;
+        height: 125px;
+        background: url(homer.jpg) -666px -250px;
+    }
+}
+
+/*Outside playing*/
+@media only screen and (min-width: 700px) and (max-width: 800px) {
+    .homer {
+        width: 166px;
+        height: 125px;
+        background: url(homer.jpg) -832px -250px;
+    }
+}
+
+/*Scene missing 2*/
+@media only screen and (min-width: 600px) and (max-width: 700px) {
+    .homer {
+        width: 166px;
+        height: 125px;
+        background: url(homer.jpg) -999px -375px;
+    }
+}
+
+/*End*/
+@media only screen and (max-width: 600px) {
+    .homer {
+        width: 166px;
+        height: 125px;
+        background: url(homer.jpg) -1165px -375px;
+    }
+}
