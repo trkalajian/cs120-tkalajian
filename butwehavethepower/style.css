@@ -1,8 +1,7 @@
-﻿body
-{
-   
+﻿body {
+    text-align: center;
 }
 #lyrics {
     font-weight: bold;
-    margin-left: 150px;
+    margin-right: 70px;
 }
