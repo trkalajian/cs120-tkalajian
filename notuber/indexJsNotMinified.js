@@ -1,6 +1,5 @@
 let map;
 var carImage = document.getElementById("car");
-//var carLocations = [{ "title": 'TmXfkjrFw', "lat": '42.3453', "lng": '-71.0464' }, { "title": 'nZXB8ZHz', "lat": '42.3662', "lng": '-71.0621' }, { "title": 'Tkwu74WC', "lat": '42.3603', "lng": '-71.0547' }, { "title": '5KWpnAJN', "lat": '42.3472', "lng": '-71.0802' }, { "title": 'uf5ZrXYw', "lat": '42.3663', "lng": '-71.0544' }, { "title": 'VMerzMH8', "lat": '42.3542', "lng": '-71.0704' }];
 var userLat = '';
 var userLng = '';
 var params = '';
@@ -41,11 +40,9 @@ async function initMap() {
     }
     userPos = await geoLocate();
 
-    console.log(userPos);
     userLat = userPos.lat;
     userLng = userPos.lng;
-    console.log(userLat + "LAT");
-    console.log(userLng + "LONG");
+
     params = "\"username=" + username + "&lat=" + userLat + "&lng=" + userLng + "\"";
 
     carLocations(userLat, userLng, params);
@@ -61,46 +58,8 @@ async function initMap() {
     })
     map.setCenter(userPos);
 
-    /*for (var i = 0; i < carLocations.length; i++) {
-        var car = carLocations[i]
-        var location = new google.maps.LatLng(car.lat, car.lng)
-        carImage = new google.maps.MarkerImage('car.png');
-        var marker = new google.maps.Marker({
-            position: location,
-            map: map,
-            icon: carImage,
-            title: car.title
-        })*/
-/*    function geoLocate(callback) {
-        callback = (callback && typeof callback === 'function' && callback) || function () { };
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-
-                    userPos = {
-                        lat: position.coords.latitude,
-                        lng: position.coords.longitude,
-                    };
-
-                    callback(userPos)
-                },
-
-            );
-        } else {
-            callback(new Error('Browser does not support geolocation'));
-        }
-       
-        
-    }*/
-
-    
-
-
-    
-
     async function carLocations(userLat, userLng, params) {
 
-        console.log(params);
         var url = 'https://jordan-marsh.herokuapp.com/rides';
         console.log(url);
 
@@ -118,6 +77,7 @@ async function initMap() {
             }
             }
         }
+        console.log(params);
 
         xhr.send(params);
       
