@@ -71,6 +71,23 @@ async function initMap() {
                         minCar = car.username;
                     }
                     carImage = new google.maps.MarkerImage('car.png'); var marker = new google.maps.Marker({ position: location, map: map, icon: carImage, title: car.username })
+
+
+                    google.maps.event.addListener(marker, 'click', (function (marker) {
+                        var contentString = '<div id="infoWindow">'
+                            + '<div id="bodyContent">'
+                            + '<p>'
+                            + "This vehicale is "
+                            + distance
+                            + " miles away" + '</p>'
+                            + '</div>'
+                            + '</div>';
+
+                        return function () {
+                            infoWindow.setContent(boxList[this.id]);
+                            infoWindow.open(map, marker);
+                        }
+                    }));
                 }
                 const distanceLineCoordinates = [{ lat: minLat, lng: minLng }, { lat: Number(userLat), lng: Number(userLng) }];
                 const distanceLine = new google.maps.Polyline({
