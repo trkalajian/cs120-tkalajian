@@ -21,7 +21,7 @@ async function initMap() {
         zoom: 8,
     });
     infoWindow = new google.maps.InfoWindow();
-    
+
     async function geoLocate() {
         if (navigator.geolocation) {
             const pos = await new Promise((resolve, reject) => {
@@ -40,14 +40,17 @@ async function initMap() {
     }
     userPos = await geoLocate();
 
-    userLat = userPos.lat;
-    userLng = userPos.lng;
+    userLat = userPos.lat.toString();
+    userLng = userPos.lng.toString();
 
-    params = "\"username=" + username + "&lat=" + userLat + "&lng=" + userLng + "\"";
+    //params = '\"username=' + encodeURIComponent(username) + '&lat=' + encodeURIComponent(userLat) + '&lng=' + encodeURIComponent(userLng) + '\"';
+    params = "username=" + username + "&lat=" + userLat + "&lng=" + userLng;
+
+    //params = "username=p5fjWJty&lat=42.789&lng=-71.567";
 
     carLocations(userLat, userLng, params);
 
-    infoWindow.setPosition(userPos);
+    //infoWindow.setPosition(userPos);
     infoWindow.open(map);
 
 
@@ -75,12 +78,12 @@ async function initMap() {
                 carData = JSON.parse(data);
 
             }
-            }
         }
         console.log(params);
-
         xhr.send(params);
-      
+    }
+  
+
 
 
 }
