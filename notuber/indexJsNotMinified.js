@@ -7,15 +7,10 @@ var xhr = new XMLHttpRequest();
 var userLoc = '';
 var username = "p5fjWJty";
 
-
-
+var car = '';
 
 async function initMap() {
-
-
-
-
-    console.log("MAP");
+    const { Geometry } = await google.maps.importLibrary("geometry");
     map = new google.maps.Map(document.getElementById("map"), {
         center: { lat: 42.352271, lng: -71.05524200000001 },
         zoom: 8,
@@ -27,33 +22,21 @@ async function initMap() {
             const pos = await new Promise((resolve, reject) => {
                 navigator.geolocation.getCurrentPosition(resolve, reject)
             });
-
             return await {
                 lat: pos.coords.latitude,
                 lng: pos.coords.longitude,
             };
-
         } else {
             (new Error('Browser does not support geolocation'));
         }
 
     }
     userPos = await geoLocate();
-
     userLat = userPos.lat.toString();
     userLng = userPos.lng.toString();
-
-    //params = '\"username=' + encodeURIComponent(username) + '&lat=' + encodeURIComponent(userLat) + '&lng=' + encodeURIComponent(userLng) + '\"';
     params = "username=" + username + "&lat=" + userLat + "&lng=" + userLng;
-
-    //params = "username=p5fjWJty&lat=42.789&lng=-71.567";
-
-    carLocations(userLat, userLng, params);
-
-    //infoWindow.setPosition(userPos);
+    carLocations(params);
     infoWindow.open(map);
-
-
     new google.maps.Marker({
         position: userPos,
         map,
@@ -61,10 +44,9 @@ async function initMap() {
     })
     map.setCenter(userPos);
 
-    async function carLocations(userLat, userLng, params) {
+    async function carLocations(params) {
 
         var url = 'https://jordan-marsh.herokuapp.com/rides';
-        console.log(url);
 
         xhr.open('POST', url, true);
 
@@ -72,17 +54,43 @@ async function initMap() {
         xhr.onreadystatechange = function () {
             if (xhr.readyState == 4 && xhr.status == 200) {
                 alert(this.responseText);
-                console.log("In here");
                 data = xhr.responseText;
-                console.log(data);
                 carData = JSON.parse(data);
+                var minDistance = Number.MAX_SAFE_INTEGER;
+                var minLat = '';
+                var minLng = '';
+                var minCar = '';
+                for (var i = 0; i < carData.length; i++) {
+                    var car = carData[i]
+                    var location = new google.maps.LatLng(car.lat, car.lng)
+                    distance = google.maps.geometry.spherical.computeDistanceBetween(location, userPos);
+                    if (minDistance > distance) {
+                        minDistance = distance;
+                        minLat = car.lat;
+                        minLng = car.lng;
+                        minCar = car.username;
+                    }
+                    carImage = new google.maps.MarkerImage('car.png'); var marker = new google.maps.Marker({ position: location, map: map, icon: carImage, title: car.username })
+                }
+                const distanceLineCoordinates = [{ lat: minLat, lng: minLng }, { lat: Number(userLat), lng: Number(userLng) }];
+                const distanceLine = new google.maps.Polyline({
+                    path: distanceLineCoordinates,
+                    geodesic: true,
+                    strokeColor: "#FF0000",
+                    strokeOpacity: 1.0,
+                    strokeWeight: 2,
 
+                });
+                distanceLine.setMap(map);
             }
         }
-        console.log(params);
         xhr.send(params);
+
+
     }
-  
+
+
+
 
 
 
