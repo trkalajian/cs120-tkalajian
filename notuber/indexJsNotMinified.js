@@ -4,11 +4,9 @@ var carImage = document.getElementById("car");
 var userLat = '';
 var userLng = '';
 var params = '';
-var userPos = '';
 var xhr = new XMLHttpRequest();
-
-
-
+var userLoc = '';
+var username = "p5fjWJty";
 
 
 
@@ -24,14 +22,31 @@ async function initMap() {
         zoom: 8,
     });
     infoWindow = new google.maps.InfoWindow();
-    await geoLocate(userPos);
     
+    async function geoLocate() {
+        if (navigator.geolocation) {
+            const pos = await new Promise((resolve, reject) => {
+                navigator.geolocation.getCurrentPosition(resolve, reject)
+            });
+
+            return await {
+                lat: pos.coords.latitude,
+                lng: pos.coords.longitude,
+            };
+
+        } else {
+            (new Error('Browser does not support geolocation'));
+        }
+
+    }
+    userPos = await geoLocate();
+
     console.log(userPos);
     userLat = userPos.lat;
     userLng = userPos.lng;
     console.log(userLat + "LAT");
     console.log(userLng + "LONG");
-    params = "\"username=p5fjWJty&lat=" + userLat + "&lng=" + userLng + "\"";
+    params = "\"username=" + username + "&lat=" + userLat + "&lng=" + userLng + "\"";
 
     carLocations(userLat, userLng, params);
 
@@ -78,31 +93,13 @@ async function initMap() {
         
     }*/
 
-    async function geoLocate(callback) {
-        callback = (callback && typeof callback === 'function' && callback) || function () { };
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-
-                    userPos = {
-                        lat: position.coords.latitude,
-                        lng: position.coords.longitude,
-                    };
-                    console.log(userPos);
-                    callback(userPos)
-                },
-
-            );
-        } else {
-            callback(new Error('Browser does not support geolocation'));
-        }
+    
 
 
-    }
+    
 
     async function carLocations(userLat, userLng, params) {
 
-        await geoLocate(userPos);
         console.log(params);
         var url = 'https://jordan-marsh.herokuapp.com/rides';
         console.log(url);
