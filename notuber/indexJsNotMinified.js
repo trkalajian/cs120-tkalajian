@@ -46,7 +46,7 @@ async function initMap() {
 
     async function carLocations(params) {
 
-        var url = 'https://jordan-marsh.herokuapp.com/rides';
+        var url = 'https://floating-woodland-75459.herokuapp.com/rides';
 
         xhr.open('POST', url, true);
 
