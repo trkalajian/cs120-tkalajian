@@ -1,5 +1,9 @@
 <!DOCTYPE html>
 <html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="./style.css" />
+        <title>Lab 13: Security and Privacy Assessment of Ride-Hailing Service</title>
+    </head>
 <body>
 
 <h1>
@@ -8,16 +12,28 @@
 <ol>
     <li>Introduction:<p>I was hired to review the vulnerabilities of the Ride-Hailing Service</p></li>
     <li>Methodology: <p>First I setup a front-end page to interact with the server lcoation at https://jordan-marsh.herokuapp.com/.  Using this I did some initial tests to ensure it was working as expected.  Before reviewing the server-side code, I started some initial Black-Box testing.  I went ahead and checked to see if I could use Burp Suite to inject bad data from the front-end site's request to the server.  The Burp Suite proxy did not allow me to do this.  I proceeded to try using curl next and to try inputting malicious data.  Now it was time to review the server code.  Looking through the code directly I was able to determine several other vulnerabilities.</p></li>
-    <li>Abstract of Findings: The sercurity and privacy issues found result in a database that is insecure, allowing malicious actors to not only view critical data, but to edit or remove it completely.  Currently, someone could input bad data or even use scripts to trick or attack visitors to the site.  These security flaws are dangerous for users and could even result in the site becoming unusable.</li>
+    <li>Abstract of Findings: <p>The sercurity and privacy issues found result in a database that is insecure, allowing malicious actors to not only view critical data, but to edit or remove it completely.  Currently, someone could input bad data or even use scripts to trick or attack visitors to the site.  These security flaws are dangerous for users and could even result in the site becoming unusable.</p></li>
     <li>Issues Found: 
         <ul>
-            <li>XSS Injection: This issue is located on the /update page.  It is a high severity issue as it allows malicious scripts to be injected into the site.  This issue was found using the curl command to inject data directly to the /update site. <img src="xss.jpg" alt="XSS Evidence"> This issue could be best resolved sanitizing any incoming data before it enters the database.  There are a variety of tools that can assist with this such as the Caja sanitizer.  You can also require POST requests to include a hidden pseudo-random value that is associated with the user.  This would require the attacked to be able to accurately guess this value before being able to submit any data.</li>
-            <li>SQL Injection: This issue is present at the /passenger.json site.  It is another high severity issue that allows malicious actors to have access to the database directly.  This issue can be found by using sequal injection on the /passenger.json page by adding additional code to the url: ?username = anything' or '1' = '1.  <img src= "UsernamejsonSQL.png" alt="Username SQL Evidence">  This can be prevented by parameterizing queries and separating code from data. Using tools like validatorjs or escaping query values with  mysql.escape() can mitigate this issue.</li>
-            <li>SQL Injection: This issue is present at /vehicle.json.  Similar to the /passenger.json site, this is a high severity issue with the same repercussions and allows for unauthorized access to confidential information.  This issue can be found using the same method as on /passenger.json, by adding additional code to the url: ?username = anything' or '1' = '1.  <img src= "vehiclejsonSQL.png" alt="Vehicle SQL Evidence">  This can be prevented by parameterizing queries and separating code from data.  Using tools like validatorjs or escaping query values with  mysql.escape() can mitigate this issue. </li>
-            <li>Cross-Origin Resource Sharing policy is not secure.  This is located on line 17 of the server code.  Currently Access-Control-Allow-Origin: is set to allow any origin to request from this resource.  This can be dangereous because it can allow other sites to have access to cookies or cookie-based sessions for this resource.  This issue was found by reviewing the code.<img src= "cors.png" alt="CORS Evidence">   This can be fixed by changing the * in ("Access-Control-Allow-Origin", "*") to be more restrictive.</li>
+            <div><li>XSS Injection: 
+                <p>This issue is located on the /update page.  It is a high severity issue as it allows malicious scripts to be injected into the site.  This issue was found using the curl command to inject data directly to the /update site.</p>
+                <div> <img src="xss.jpg" alt="XSS Evidence"> </div>
+                <p>This issue could be best resolved sanitizing any incoming data before it enters the database.  There are a variety of tools that can assist with this such as the Caja sanitizer.  You can also require POST requests to include a hidden pseudo-random value that is associated with the user.  This would require the attacker to be able to accurately guess this value before being able to submit any data.</p></li></div>
+            <div><li>SQL Injection: 
+                <p>This issue is present at the /passenger.json site.  It is another high severity issue that allows malicious actors to have access to the database directly.  This issue can be found by using sequal injection on the /passenger.json page by adding additional code to the url: ?username = anything' or '1' = '1. </p> 
+                <div><img src= "UsernamejsonSQL.png" alt="Username SQL Evidence"></div>
+                <p> This can be prevented by parameterizing queries and separating code from data. Using tools like validatorjs or escaping query values with  mysql.escape() can mitigate this issue.</p></li></div>
+            <div><li>SQL Injection: 
+                <p>This issue is present at /vehicle.json.  Similar to the /passenger.json site, this is a high severity issue with the same repercussions and allows for unauthorized access to confidential information.  This issue can be found using the same method as on /passenger.json, by adding additional code to the url: ?username = anything' or '1' = '1. </p>
+                <div><img src= "vehiclejsonSQL.png" alt="Vehicle SQL Evidence"> </div>
+                <p> This can be prevented by parameterizing queries and separating code from data.  Using tools like validatorjs or escaping query values with  mysql.escape() can mitigate this issue. </p></li></div>
+            <div><li>Cross-Origin Resource Sharing:
+                <p> The current policy is not secure.  This is located on line 17 of the server code.  Currently Access-Control-Allow-Origin: is set to allow any origin to request from this resource.  This can be dangereous because it can allow other sites to have access to cookies or cookie-based sessions for this resource.  This issue was found by reviewing the code.</p>
+                <div> <img src= "cors.png" alt="CORS Evidence"></div>
+                <p>This can be fixed by changing the * in ("Access-Control-Allow-Origin", "*") to be more restrictive.</p></li></div>
         </ul>
     </li>
-    <li>Conclusion: <p>The issues found can be remediated by modifying the architecture of the server code.   </p>
+    <li>Conclusion: <p>The issues found can be remediated by modifying the architecture of the server code.  It is important to consider that whenever someone is interacting with the database there is a potential for a user to try and inject something malicious.  With this consideration in mind, the server should be constructed in such a way where any code is separated from any data and parameterized when possible.  </p></li>
 </ol>
 
 
